@@ -15,7 +15,7 @@
 		<a href="/member/Logout.do">로그아웃</a>
 		<a href="/member/myinfo.do?id=${memberId}">마이페이지</a>
 	</c:if>
-	<c:if test="${sessionScope.memeberId eq null}">
+		<c:if test="${memberId eq null }">
 		<fieldset>
 			<legend>로그인</legend>
 	<form action="/member/Login.do" method="post">
