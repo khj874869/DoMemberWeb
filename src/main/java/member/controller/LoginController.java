@@ -33,16 +33,22 @@ public class LoginController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String memberId = request.getParameter("id");
-		String memberPw = request.getParameter("pw");
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		String memberId = request.getParameter("member-id");
+		String memberPw = request.getParameter("member-pw");
 		Member member = new Member(memberId,memberPw);
 	    //select * from MEMBER_WEB  where MEMBER_ID = ?and MEMBER_PW = ?
 		MemberService service= new MemberService();
 		Member mOne = service.selectOneById(member);
-		HttpSession session = request.getSession();
-		session.setAttribute("memberId", member.getMemberId());
-		session.setAttribute("memberName", member.getMemberName());
+		
 		if(mOne!=null) {
+			HttpSession session = request.getSession();
+			session.setAttribute("memberId", member.getMemberId());
+			session.setAttribute("memberName", member.getMemberName());
 			request.setAttribute("msg","전송성공했습니다.");
 			request.setAttribute("URL", "/index.jsp");
 			RequestDispatcher view = request.getRequestDispatcher("/member/ServiceSuccess.jsp");
@@ -53,12 +59,6 @@ public class LoginController extends HttpServlet {
 			RequestDispatcher view = request.getRequestDispatcher("/member/ServiceFail.jsp");
 			view.forward(request, response);			
 			}
-
-		
-	}
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 	/**
