@@ -7,60 +7,60 @@ public class Member {
 	private String memberPw;
 	private String memberName;
 	private int memberAge;
-	private String gender;
+	private String memberGender;
 	private String memberEmail;
-	private String memberphone;
+	private String memberPhone;
 	private String memberAddress;
-	private String memberhobby;
-	private Timestamp memberdate;
-	private Timestamp updatedate;
-	private String YN;
-	public Member(String memberId, String memberPw, String gender, String memberEmail, String memberphone,
-			String memberAddress, String memberhobby) {
-		super();
-		this.memberId = memberId;
-		this.memberPw = memberPw;
-		this.gender = gender;
-		this.memberEmail = memberEmail;
-		this.memberphone = memberphone;
-		this.memberAddress = memberAddress;
-		this.memberhobby = memberhobby;
-	}
-	public Member(String memberId, String memberPw, String memberEmail, String memberphone, String memberAddress,
-			String memberhobby) {
-		super();
-		this.memberId = memberId;
-		this.memberPw = memberPw;
-		this.memberEmail = memberEmail;
-		this.memberphone = memberphone;
-		this.memberAddress = memberAddress;
-		this.memberhobby = memberhobby;
-	}
-
+	private String memberHobby;
+	private Timestamp memberDate;
+	private Timestamp updateDate;
+	private String memberYn;
+	
 	public Member() {
-		
+		// TODO Auto-generated constructor stub
 	}
 	
-	public Member(String memberId, String memberPw, String memberName, int memberAge, String gender, String email,
-			String phone, String address, String hobby) {
+	public Member(String memberId, String memberPw) {
+		super();
+		this.memberId = memberId;
+		this.memberPw = memberPw;
+	}
+
+	public Member(String memberId, String memberPw, String memberEmail, String memberPhone, String memberAddress,
+			String memberHobby) {
+		super();
+		this.memberId = memberId;
+		this.memberPw = memberPw;
+		this.memberEmail = memberEmail;
+		this.memberPhone = memberPhone;
+		this.memberAddress = memberAddress;
+		this.memberHobby = memberHobby;
+	}
+
+	public Member(String memberId, String memberPw, String memberGender, String memberEmail, String memberPhone,
+			String memberAddress, String memberHobby) {
+		super();
+		this.memberId = memberId;
+		this.memberPw = memberPw;
+		this.memberGender = memberGender;
+		this.memberEmail = memberEmail;
+		this.memberPhone = memberPhone;
+		this.memberAddress = memberAddress;
+		this.memberHobby = memberHobby;
+	}
+
+	public Member(String memberId, String memberPw, String memberName, int memberAge, String memberGender,
+			String memberEmail, String memberPhone, String memberAddress, String memberHobby) {
 		super();
 		this.memberId = memberId;
 		this.memberPw = memberPw;
 		this.memberName = memberName;
 		this.memberAge = memberAge;
-		this.gender = gender;
-		this.memberEmail = email;
-		this.memberphone = phone;
-		this.memberAddress = address;
-		this.memberhobby = hobby;
-	}
-
-	
-
-	public Member(String memberId, String memberPw) {
-		super();
-		this.memberId = memberId;
-		this.memberPw = memberPw;
+		this.memberGender = memberGender;
+		this.memberEmail = memberEmail;
+		this.memberPhone = memberPhone;
+		this.memberAddress = memberAddress;
+		this.memberHobby = memberHobby;
 	}
 
 	public String getMemberId() {
@@ -87,61 +87,64 @@ public class Member {
 	public void setMemberAge(int memberAge) {
 		this.memberAge = memberAge;
 	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-	public String getEmail() {
+	public String getMemberEmail() {
 		return memberEmail;
 	}
-	public void setEmail(String email) {
-		memberEmail = email;
+	public void setMemberEmail(String memberEmail) {
+		this.memberEmail = memberEmail;
 	}
-	public String getPhone() {
-		return memberphone;
+	public String getMemberPhone() {
+		return memberPhone;
 	}
-	public void setPhone(String phone) {
-		this.memberphone = phone;
+	public void setMemberPhone(String memberPhone) {
+		this.memberPhone = memberPhone;
 	}
-	public String getAddress() {
+	public String getMemberAddress() {
 		return memberAddress;
 	}
-	public void setAddress(String address) {
-		memberAddress = address;
+	public void setMemberAddress(String memberAddress) {
+		this.memberAddress = memberAddress;
 	}
-	public String getHobby() {
-		return memberhobby;
+	public String getMemberGender() {
+		return memberGender;
 	}
-	public void setHobby(String hobby) {
-		this.memberhobby = hobby;
+	public void setMemberGender(String memberGender) {
+		this.memberGender = memberGender;
 	}
-	public Timestamp getMemberdate() {
-		return memberdate;
+	public String getMemberHobby() {
+		return memberHobby;
 	}
-	public void setMemberdate(Timestamp timestamp) {
-		this.memberdate = timestamp;
+	public void setMemberHobby(String memberHobby) {
+		this.memberHobby = memberHobby;
 	}
-	public Timestamp getUpdatedate() {
-		return updatedate;
+	public Timestamp getMemberDate() {
+		return memberDate;
 	}
-	public void setUpdatedate(Timestamp timestamp) {
-		this.updatedate = timestamp;
+	public void setMemberDate(Timestamp memberDate) {
+		this.memberDate = memberDate;
 	}
-	public String getYN() {
-		return YN;
+	public Timestamp getUpdateDate() {
+		return updateDate;
 	}
-	public void setYN(String yN) {
-		YN = yN;
+	public void setUpdateDate(Timestamp updateDate) {
+		this.updateDate = updateDate;
 	}
-	@Override
-	public String toString() {
-		return "Member [아이디=" + memberId + ", 패스워드=" + memberPw + ", 이름=" + memberName + ", 나이="
-				+ memberAge + ", 성별=" + gender + ", 이메일=" + memberEmail + ", 번호=" + memberphone + ", 주소=" + memberAddress
-				+ ", 취미=" + memberhobby + ", 가입일=" + memberdate + ", 수정일자=" + updatedate + ", 회원여부=" + YN + "]";
+	public String getMemberYn() {
+		return memberYn;
+	}
+	public void setMemberYn(String memberYn) {
+		this.memberYn = memberYn;
 	}
 	
+	@Override
+	public String toString() {
+		return "회원 [아이디=" + memberId + ", 비번=" + memberPw + ", 이름=" + memberName + ", 나이="
+				+ memberAge + ", 성별=" + memberGender + ", 이메일=" + memberEmail + ", 전화번호=" + memberPhone + ", 주소="
+				+ memberAddress + ", 취미=" + memberHobby + ", 등록일=" + memberDate + ", 수정일=" + updateDate + ", 회원여부=" + memberYn + "]";
+	}
+
+	
+}
 	
 	
 	
