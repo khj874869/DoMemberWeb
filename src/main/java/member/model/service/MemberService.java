@@ -7,70 +7,88 @@ import member.model.dao.MemberDAO;
 import member.model.vo.Member;
 
 public class MemberService {
-	private JDBCTemplate jdbctemplate;
-	private MemberDAO mDao;
 
+	private JDBCTemplate jdbcTemplate;
+	private MemberDAO mDao;
+	
 	public MemberService() {
-		jdbctemplate=JDBCTemplate.getInstance();
-		 mDao= new MemberDAO();
+//		jdbcTemplate = new JDBCTemplate();
+		jdbcTemplate = JDBCTemplate.getInstance();
+		mDao = new MemberDAO();
 	}
-	public int InsertMember(Member member) {
-		
-		Connection conn = jdbctemplate.createConnection();
-		MemberDAO mdao= new MemberDAO();
-		int result = mdao.InsertMember(conn,member);
-		//커밋 롤백
-		if(result>0) {
-			//성공 커밋
-			jdbctemplate.commit(conn);
+	// 연결생성
+	// DAO 호출
+	// 커밋/롤백
+	
+	public int insertMember(Member member) {
+		// 연결생성
+		Connection conn = jdbcTemplate.createConnection();
+		// DAO 호출
+		int result = mDao.insertMember(conn, member);
+		// 커밋/롤백
+		if(result > 0) {
+			// 성공 - 커밋
+			jdbcTemplate.commit(conn);
 		}else {
-			//실패 - 롤백
-			jdbctemplate.rollback(conn);
-		}		
+			// 실패 - 롤백
+			jdbcTemplate.rollback(conn);
+		}
+		jdbcTemplate.close(conn);
 		return result;
 	}
-	//연결 생성
-	//DAO 호출
-	//커밋 / 롤백 
 
 	public int updateMember(Member member) {
-		Connection conn = jdbctemplate.createConnection();
-		int result = mDao.Updatemember(conn,member);
-		if(result>0) {
-			//성공 커밋
-			jdbctemplate.commit(conn);
+		// 연결생성
+		Connection conn = jdbcTemplate.createConnection();
+		// DAO 호출
+		int result = mDao.updateMember(conn, member);
+		// 커밋/롤백
+		if(result > 0) {
+			// 성공 - 커밋
+			jdbcTemplate.commit(conn);
 		}else {
-			//실패 - 롤백
-			jdbctemplate.rollback(conn);
-		}		
+			// 실패 - 롤백
+			jdbcTemplate.rollback(conn);
+		}
+		jdbcTemplate.close(conn);
 		return result;
-		
 	}
+
 	public int deleteMember(String memberId) {
-		Connection conn =jdbctemplate.createConnection();
-		int result = mDao.deletemember(conn,memberId);
-		if(result>0) {
-			//성공 커밋
-			jdbctemplate.commit(conn);
+		// TODO Auto-generated method stub
+		// 연결생성
+		Connection conn = jdbcTemplate.createConnection();
+		// DAO호출(연결 넘겨주기)
+		int result = mDao.deleteMember(conn, memberId);
+		if(result > 0) {
+			// 성공 - 커밋
+			jdbcTemplate.commit(conn);
 		}else {
-			//실패 - 롤백
-			jdbctemplate.rollback(conn);
-		}		
+			// 실패 - 롤백
+			jdbcTemplate.rollback(conn);
+		}
+		jdbcTemplate.close(conn);
 		return result;
 	}
-	public Member selectOneById(Member member) {
-		Connection conn = jdbctemplate.createConnection();
-		Member mOne = mDao.selectOneById(conn,member);
-		jdbctemplate.close(conn);
+
+	public Member selectCheckLogin(Member member) {
+		// TODO Auto-generated method stub
+		// 연결생성
+		Connection conn = jdbcTemplate.createConnection();
+		// DAO 호출(연결도 넘겨줘야 함)
+		Member mOne = mDao.selectCheckLogin(conn, member);
+		jdbcTemplate.close(conn);
 		return mOne;
-		
 	}
+
 	public Member selectOneById(String memberId) {
-		//연결생성
-		Connection conn = jdbctemplate.createConnection();
-		Member member = mDao.selectOneById(conn,memberId);
-		jdbctemplate.close(conn);
+		// 연결생성
+		Connection conn = jdbcTemplate.createConnection();
+		// DAO 호출(연결도 넘겨줘야 함)
+		Member member = mDao.selectOneById(conn, memberId);
+		jdbcTemplate.close(conn);
 		return member;
 	}
+
 	
 }
