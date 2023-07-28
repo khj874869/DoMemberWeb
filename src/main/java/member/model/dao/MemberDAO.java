@@ -5,26 +5,26 @@ import member.model.vo.Member;
 
 public class MemberDAO {
 
-	public int InsertMember(Connection conn, Member member) {
-		String query = "insert into MEMBER_WEB values(?,?,?,?,?,?,?,?,?,DEFAULT,DEFAULT,DEFAULT)";
+	public int insertMember(Connection conn, Member member) {
+		String query = "INSERT INTO MEMBER_TBL VALUES(?,?,?,?,?,?,?,?,?,DEFAULT,DEFAULT,DEFAULT)";
 		PreparedStatement pstmt = null;
-		int result =0;
+		int result = 0;
+		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getMemberPw());
 			pstmt.setString(3, member.getMemberName());
 			pstmt.setInt(4, member.getMemberAge());
-			pstmt.setString(5, member.getGender());
-			pstmt.setString(6, member.getEmail());
-			pstmt.setString(7, member.getPhone());
-			pstmt.setString(8, member.getAddress());
-			pstmt.setString(9, member.getHobby());
+			pstmt.setString(5, member.getMemberGender());
+			pstmt.setString(6, member.getMemberEmail());
+			pstmt.setString(7, member.getMemberPhone());
+			pstmt.setString(8, member.getMemberAddress());
+			pstmt.setString(9, member.getMemberHobby());
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				pstmt.close();
 				conn.close();
@@ -35,22 +35,71 @@ public class MemberDAO {
 		return result;
 	}
 
-	public Member selectOneById(Connection conn, Member member) {
+	public int updateMember(Connection conn, Member member) {
+		String query = "UPDATE MEMBER_TBL SET MEMBER_PW = ?, MEMBER_GENDER = ?, MEMBER_EMAIL = ?, MEMBER_PHONE = ?, MEMBER_ADDRESS = ?, MEMBER_HOBBY = ?, UPDATE_DATE = DEFAULT WHERE MEMBER_ID = ?";
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, member.getMemberPw());
+			pstmt.setString(2, member.getMemberGender());
+			pstmt.setString(3, member.getMemberEmail());
+			pstmt.setString(4, member.getMemberPhone());
+			pstmt.setString(5, member.getMemberAddress());
+			pstmt.setString(6, member.getMemberHobby());
+			pstmt.setString(7, member.getMemberId());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
+	public int deleteMember(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "DELETE FROM MEMBER_TBL WHERE MEMBER_ID = ?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
+	public Member selectCheckLogin(Connection conn, Member member) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
+		String query = "SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = ? AND MEMBER_PW = ?";
 		Member mOne = null;
-		String query = "select * from MEMBER_WEB where MEMBER_ID= ? AND MEMBER_PW =?";
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getMemberPw());
-			rset=pstmt.executeQuery();
+			rset = pstmt.executeQuery();	// 누락 주의, 결과값 받기 주의
 			if(rset.next()) {
-				mOne = rsetTomember(rset);
+				mOne = rsetToMember(rset);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				rset.close();
 				pstmt.close();
@@ -62,21 +111,20 @@ public class MemberDAO {
 	}
 
 	public Member selectOneById(Connection conn, String memberId) {
-	
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		Member mOne = null;
 		String query = "SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = ?";
+		Member mOne = null;
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1,memberId);
-			rset=pstmt.executeQuery();
+			pstmt.setString(1, memberId);
+			rset = pstmt.executeQuery();	// 누락 주의, 결과값 받기 주의
 			if(rset.next()) {
-				mOne = rsetTomember(rset);
+				mOne = rsetToMember(rset);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
 				rset.close();
 				pstmt.close();
@@ -85,80 +133,24 @@ public class MemberDAO {
 			}
 		}
 		return mOne;
-		
-	
 	}
 
-	private Member rsetTomember(ResultSet rset) throws SQLException {
-		Member mOne = new Member();
-		mOne.setMemberId(rset.getString("MEMBER_ID"));
-		mOne.setMemberPw(rset.getString("MEMBER_PW"));
-		mOne.setMemberName(rset.getString("MEMBER_NAME"));
-		mOne.setMemberAge(rset.getInt("MEMBER_AGE"));
-		mOne.setGender(rset.getString("MEMBER_GENDER"));
-		mOne.setEmail(rset.getString("MEMBER_EMAIL"));
-		mOne.setPhone(rset.getString("MEMBER_PHONE"));
-		mOne.setAddress(rset.getString("MEMBER_ADDRESS"));
-		mOne.setHobby(rset.getString("MEMBER_HOBBY"));		
-		mOne.setMemberdate(rset.getTimestamp("MEMBER_DATE"));
-		mOne.setUpdatedate(rset.getTimestamp("UPDATE_DATE"));
-		mOne.setYN(rset.getString("MEMBER_YN"));
-		return mOne;
+	private Member rsetToMember(ResultSet rset) throws SQLException {
+		Member member = new Member();
+		member.setMemberId(rset.getString("MEMBER_ID"));
+		member.setMemberPw(rset.getString("MEMBER_PW"));
+		member.setMemberName(rset.getString("MEMBER_NAME"));
+		member.setMemberAge(rset.getInt("MEMBER_AGE"));
+		member.setMemberGender(rset.getString("MEMBER_GENDER"));
+		member.setMemberEmail(rset.getString("MEMBER_EMAIL"));
+		member.setMemberPhone(rset.getString("MEMBER_PHONE"));
+		member.setMemberAddress(rset.getString("MEMBER_ADDRESS"));
+		member.setMemberHobby(rset.getString("MEMBER_HOBBY"));
+		member.setMemberDate(rset.getTimestamp("MEMBER_DATE"));
+		member.setUpdateDate(rset.getTimestamp("UPDATE_DATE"));
+		member.setMemberYn(rset.getString("MEMBER_YN"));
+		return member;
 	}
-
-	public int deletemember(Connection conn,String memberId) {
-		String query = "delete from MEMBER_WEB where MEMBER_ID = ?";
-		PreparedStatement pstmt = null;
-		int result = 0;
-		try {
-			pstmt =conn.prepareStatement(query);
-			pstmt.setString(1, memberId);
-			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}finally {
-			try {
-				pstmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			}
-		
-		
-		return result;
-	}
-
-	public int Updatemember(Connection conn, Member member) {
-		String query ="UPDATE MEMBER_WEB SET MEMBER_PW = ?,MEMBER_PHONE=?,MEMBER_ADDRESS=?,MEMBER_HOBBY=? WHERE MEMBER_ID = ?, UPDATE_DATE =SYSDATE";
-		PreparedStatement pstmt = null;
-		int result =0;
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, member.getMemberPw());
-			pstmt.setString(2,member.getGender());
-			pstmt.setString(3, member.getEmail());
-			pstmt.setString(4, member.getPhone());
-			pstmt.setString(5, member.getAddress());
-			pstmt.setString(6, member.getHobby());
-			pstmt.setString(7, member.getMemberId());
-
-			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			try {
-				pstmt.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-	
-	
-	
 
 }
+
